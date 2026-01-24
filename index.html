@@ -123,7 +123,38 @@
   <a-entity sound="src: #movie; autoplay: false; positional: false"></a-entity>
 
   <!-- FILE DI POLTRONE ROSSE -->
-  <!-- FILA 1 (più vicina) -->
+  <!-- FILA DAVANTI (aggiunta per poltrone davanti all'utente) -->
+  <!-- Poltrona -4 davanti -->
+  <a-box position="-4 0.4 -0.5" width="1.2" height="0.5" depth="1.1" color="#b30000"></a-box>
+  <a-box position="-4 0.85 -0.05" width="1.2" height="0.8" depth="0.2" color="#8b0000"></a-box>
+  <a-box position="-4.5 0.7 -0.2" width="0.15" height="0.6" depth="0.6" color="#6f0000"></a-box>
+  <a-box position="-3.5 0.7 -0.2" width="0.15" height="0.6" depth="0.6" color="#6f0000"></a-box>
+
+  <!-- Poltrona -2 davanti -->
+  <a-box position="-2 0.4 -0.5" width="1.2" height="0.5" depth="1.1" color="#b30000"></a-box>
+  <a-box position="-2 0.85 -0.05" width="1.2" height="0.8" depth="0.2" color="#8b0000"></a-box>
+  <a-box position="-2.5 0.7 -0.2" width="0.15" height="0.6" depth="0.6" color="#6f0000"></a-box>
+  <a-box position="-1.5 0.7 -0.2" width="0.15" height="0.6" depth="0.6" color="#6f0000"></a-box>
+
+  <!-- Poltrona 0 davanti -->
+  <a-box position="0 0.4 -0.5" width="1.2" height="0.5" depth="1.1" color="#b30000"></a-box>
+  <a-box position="0 0.85 -0.05" width="1.2" height="0.8" depth="0.2" color="#8b0000"></a-box>
+  <a-box position="-0.5 0.7 -0.2" width="0.15" height="0.6" depth="0.6" color="#6f0000"></a-box>
+  <a-box position="0.5 0.7 -0.2" width="0.15" height="0.6" depth="0.6" color="#6f0000"></a-box>
+
+  <!-- Poltrona 2 davanti -->
+  <a-box position="2 0.4 -0.5" width="1.2" height="0.5" depth="1.1" color="#b30000"></a-box>
+  <a-box position="2 0.85 -0.05" width="1.2" height="0.8" depth="0.2" color="#8b0000"></a-box>
+  <a-box position="1.5 0.7 -0.2" width="0.15" height="0.6" depth="0.6" color="#6f0000"></a-box>
+  <a-box position="2.5 0.7 -0.2" width="0.15" height="0.6" depth="0.6" color="#6f0000"></a-box>
+
+  <!-- Poltrona 4 davanti -->
+  <a-box position="4 0.4 -0.5" width="1.2" height="0.5" depth="1.1" color="#b30000"></a-box>
+  <a-box position="4 0.85 -0.05" width="1.2" height="0.8" depth="0.2" color="#8b0000"></a-box>
+  <a-box position="3.5 0.7 -0.2" width="0.15" height="0.6" depth="0.6" color="#6f0000"></a-box>
+  <a-box position="4.5 0.7 -0.2" width="0.15" height="0.6" depth="0.6" color="#6f0000"></a-box>
+
+  <!-- FILA 1 (posizione utente) -->
   <!-- Poltrona -4 -->
   <a-box position="-4 0.4 2" width="1.2" height="0.5" depth="1.1" color="#b30000"></a-box>
   <a-box position="-4 0.85 2.55" width="1.2" height="0.8" depth="0.2" color="#8b0000"></a-box>
@@ -262,9 +293,93 @@
   <a-box position="6.5 0.7 9.8" width="0.15" height="0.6" depth="0.6" color="#6f0000"></a-box>
   <a-box position="7.5 0.7 9.8" width="0.15" height="0.6" depth="0.6" color="#6f0000"></a-box>
 
-  <!-- LUCI AMBIENTALI -->
+  <!-- PERSONE CHE GUARDANO IL FILM (modelli semplici su poltrone avanti e indietro) -->
+  <!-- Persona su poltrona -4 fila davanti -->
+  <a-box position="-4 1.0 -0.5" width="0.8" height="0.8" depth="0.5" color="#d2b48c"></a-box> <!-- Corpo -->
+  <a-sphere position="-4 1.6 -0.5" radius="0.3" color="#ffdab9"></a-sphere> <!-- Testa -->
+
+  <!-- Persona su poltrona -2 fila davanti -->
+  <a-box position="-2 1.0 -0.5" width="0.8" height="0.8" depth="0.5" color="#a52a2a"></a-box>
+  <a-sphere position="-2 1.6 -0.5" radius="0.3" color="#ffdead"></a-sphere>
+
+  <!-- Persona su poltrona 0 fila davanti -->
+  <a-box position="0 1.0 -0.5" width="0.8" height="0.8" depth="0.5" color="#556b2f"></a-box>
+  <a-sphere position="0 1.6 -0.5" radius="0.3" color="#ffe4b5"></a-sphere>
+
+  <!-- Persona su poltrona 2 fila davanti -->
+  <a-box position="2 1.0 -0.5" width="0.8" height="0.8" depth="0.5" color="#8b4513"></a-box>
+  <a-sphere position="2 1.6 -0.5" radius="0.3" color="#f4a460"></a-sphere>
+
+  <!-- Persona su poltrona 4 fila davanti -->
+  <a-box position="4 1.0 -0.5" width="0.8" height="0.8" depth="0.5" color="#2f4f4f"></a-box>
+  <a-sphere position="4 1.6 -0.5" radius="0.3" color="#deb887"></a-sphere>
+
+  <!-- Persona su poltrona -5 fila 2 (indietro) -->
+  <a-box position="-5 1.0 4.5" width="0.8" height="0.8" depth="0.5" color="#4b0082"></a-box>
+  <a-sphere position="-5 1.6 4.5" radius="0.3" color="#fffacd"></a-sphere>
+
+  <!-- Persona su poltrona -3 fila 2 -->
+  <a-box position="-3 1.0 4.5" width="0.8" height="0.8" depth="0.5" color="#ff4500"></a-box>
+  <a-sphere position="-3 1.6 4.5" radius="0.3" color="#faebd7"></a-sphere>
+
+  <!-- Persona su poltrona 1 fila 2 -->
+  <a-box position="1 1.0 4.5" width="0.8" height="0.8" depth="0.5" color="#006400"></a-box>
+  <a-sphere position="1 1.6 4.5" radius="0.3" color="#ffe4c4"></a-sphere>
+
+  <!-- Persona su poltrona 5 fila 2 -->
+  <a-box position="5 1.0 4.5" width="0.8" height="0.8" depth="0.5" color="#191970"></a-box>
+  <a-sphere position="5 1.6 4.5" radius="0.3" color="#ffdead"></a-sphere>
+
+  <!-- Persona su poltrona -6 fila 3 -->
+  <a-box position="-6 1.0 7" width="0.8" height="0.8" depth="0.5" color="#b22222"></a-box>
+  <a-sphere position="-6 1.6 7" radius="0.3" color="#f5deb3"></a-sphere>
+
+  <!-- Persona su poltrona -2 fila 3 -->
+  <a-box position="-2 1.0 7" width="0.8" height="0.8" depth="0.5" color="#228b22"></a-box>
+  <a-sphere position="-2 1.6 7" radius="0.3" color="#ffe4b5"></a-sphere>
+
+  <!-- Persona su poltrona 4 fila 3 -->
+  <a-box position="4 1.0 7" width="0.8" height="0.8" depth="0.5" color="#ff8c00"></a-box>
+  <a-sphere position="4 1.6 7" radius="0.3" color="#f0e68c"></a-sphere>
+
+  <!-- Persona su poltrona 6 fila 3 -->
+  <a-box position="6 1.0 7" width="0.8" height="0.8" depth="0.5" color="#00bfff"></a-box>
+  <a-sphere position="6 1.6 7" radius="0.3" color="#ffe4e1"></a-sphere>
+
+  <!-- Persona su poltrona -7 fila 4 -->
+  <a-box position="-7 1.0 9.5" width="0.8" height="0.8" depth="0.5" color="#8b0000"></a-box>
+  <a-sphere position="-7 1.6 9.5" radius="0.3" color="#fa8072"></a-sphere>
+
+  <!-- Persona su poltrona -3 fila 4 -->
+  <a-box position="-3 1.0 9.5" width="0.8" height="0.8" depth="0.5" color="#9932cc"></a-box>
+  <a-sphere position="-3 1.6 9.5" radius="0.3" color="#f5f5dc"></a-sphere>
+
+  <!-- Persona su poltrona 3 fila 4 -->
+  <a-box position="3 1.0 9.5" width="0.8" height="0.8" depth="0.5" color="#00fa9a"></a-box>
+  <a-sphere position="3 1.6 9.5" radius="0.3" color="#ffefd5"></a-sphere>
+
+  <!-- Persona su poltrona 7 fila 4 -->
+  <a-box position="7 1.0 9.5" width="0.8" height="0.8" depth="0.5" color="#20b2aa"></a-box>
+  <a-sphere position="7 1.6 9.5" radius="0.3" color="#fff0f5"></a-sphere>
+
+  <!-- LUCI AMBIENTALI E PIÙ PUNTI LUCE -->
   <a-light type="ambient" intensity="0.3" color="#1a1a2a"></a-light>
   <a-light type="point" position="0 6.5 -14" intensity="0.5" color="#ffffff"></a-light>
+  <a-light type="point" position="-10 6.5 -10" intensity="0.4" color="#ffcc00"></a-light>
+  <a-light type="point" position="10 6.5 -10" intensity="0.4" color="#ffcc00"></a-light>
+  <a-light type="point" position="-10 6.5 0" intensity="0.4" color="#ffcc00"></a-light>
+  <a-light type="point" position="10 6.5 0" intensity="0.4" color="#ffcc00"></a-light>
+  <a-light type="point" position="-10 6.5 10" intensity="0.4" color="#ffcc00"></a-light>
+  <a-light type="point" position="10 6.5 10" intensity="0.4" color="#ffcc00"></a-light>
+  <a-light type="point" position="0 6.5 0" intensity="0.5" color="#ffffff"></a-light>
+  <a-light type="point" position="0 6.5 10" intensity="0.5" color="#ffffff"></a-light>
+  <a-light type="point" position="-5 6.5 -5" intensity="0.3" color="#ffff99"></a-light>
+  <a-light type="point" position="5 6.5 -5" intensity="0.3" color="#ffff99"></a-light>
+  <a-light type="point" position="-5 6.5 5" intensity="0.3" color="#ffff99"></a-light>
+  <a-light type="point" position="5 6.5 5" intensity="0.3" color="#ffff99"></a-light>
+  <a-light type="point" position="-15 6.5 0" intensity="0.4" color="#ffcc00"></a-light>
+  <a-light type="point" position="15 6.5 0" intensity="0.4" color="#ffcc00"></a-light>
+  <a-light type="point" position="0 6.5 -5" intensity="0.5" color="#ffffff"></a-light>
 
   <!-- CAMERA (SEDUTO + GIROSCOPIO) -->
   <a-entity position="0 1.2 2">
