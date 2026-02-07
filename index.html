@@ -1,610 +1,444 @@
 <!DOCTYPE html>
 <html lang="it">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Cinema Virtuale Realistico</title>
-    <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-        
-        body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background-color: #000;
-            color: #fff;
-            overflow: hidden;
-            height: 100vh;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-        }
-        
-        .container {
-            width: 100%;
-            max-width: 1200px;
-            padding: 20px;
-            position: relative;
-        }
-        
-        .cinema-title {
-            text-align: center;
-            margin-bottom: 20px;
-            font-size: 2.5rem;
-            color: #ffcc00;
-            text-shadow: 0 0 10px rgba(255, 204, 0, 0.7);
-            letter-spacing: 3px;
-        }
-        
-        .cinema-room {
-            width: 100%;
-            height: 750px;
-            background: linear-gradient(to bottom, #111 0%, #000 100%);
-            border-radius: 20px;
-            position: relative;
-            overflow: hidden;
-            box-shadow: 0 0 50px rgba(0, 0, 0, 0.8);
-            transition: background-color 2s ease;
-        }
-        
-        /* Schermo cinema */
-        .screen-container {
-            position: absolute;
-            top: 40px;
-            left: 50%;
-            transform: translateX(-50%);
-            width: 1918px;
-            height: 910px;
-            max-width: 95%;
-            max-height: 500px;
-            perspective: 1000px;
-        }
-        
-        .screen {
-            width: 100%;
-            height: 100%;
-            background-color: #000;
-            border-radius: 10px;
-            position: relative;
-            overflow: hidden;
-            box-shadow: 0 0 60px rgba(255, 255, 255, 0.1);
-            transform: rotateX(5deg);
-            border: 15px solid #222;
-        }
-        
-        .screen-content {
-            width: 100%;
-            height: 100%;
-            position: relative;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            background: radial-gradient(circle at center, #1a1a1a, #000);
-        }
-        
-        .screen-play-btn {
-            background-color: #ffcc00;
-            color: #000;
-            border: none;
-            padding: 15px 40px;
-            font-size: 1.5rem;
-            border-radius: 50px;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            font-weight: bold;
-            letter-spacing: 2px;
-            box-shadow: 0 0 20px rgba(255, 204, 0, 0.5);
-            z-index: 10;
-        }
-        
-        .screen-play-btn:hover {
-            background-color: #ffd633;
-            transform: scale(1.05);
-            box-shadow: 0 0 30px rgba(255, 204, 0, 0.8);
-        }
-        
-        .screen-text {
-            font-size: 1.8rem;
-            margin-top: 20px;
-            color: #ffcc00;
-            text-align: center;
-            text-shadow: 0 0 10px rgba(255, 204, 0, 0.5);
-        }
-        
-        /* Illuminazione ambientale */
-        .ambient-light {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: radial-gradient(circle at 50% 30%, rgba(255, 204, 0, 0.15) 0%, transparent 70%);
-            transition: opacity 2s ease;
-            pointer-events: none;
-        }
-        
-        .side-lights {
-            position: absolute;
-            top: 0;
-            width: 100%;
-            height: 100%;
-            pointer-events: none;
-        }
-        
-        .side-light {
-            position: absolute;
-            top: 0;
-            width: 30px;
-            height: 100%;
-            background: linear-gradient(to right, rgba(255, 204, 0, 0.2), transparent);
-        }
-        
-        .side-light.left {
-            left: 0;
-        }
-        
-        .side-light.right {
-            right: 0;
-            transform: rotate(180deg);
-        }
-        
-        /* Posti a sedere e persone */
-        .seating-area {
-            position: absolute;
-            bottom: 0;
-            width: 100%;
-            height: 300px;
-            display: flex;
-            justify-content: center;
-            align-items: flex-end;
-            padding-bottom: 40px;
-        }
-        
-        .seats-row {
-            display: flex;
-            gap: 15px;
-            margin-bottom: 20px;
-        }
-        
-        .seat {
-            width: 40px;
-            height: 50px;
-            background-color: #333;
-            border-radius: 8px 8px 4px 4px;
-            position: relative;
-            transition: all 0.3s ease;
-        }
-        
-        .seat.person {
-            background-color: #555;
-        }
-        
-        .seat-head {
-            width: 30px;
-            height: 30px;
-            background-color: #444;
-            border-radius: 50%;
-            position: absolute;
-            top: -20px;
-            left: 5px;
-        }
-        
-        .seat.person .seat-head {
-            background-color: #c19a6b; /* Colore pelle */
-        }
-        
-        /* Persone realistiche */
-        .person-1 .seat-head {
-            background-color: #d4b59e;
-            width: 28px;
-            height: 28px;
-        }
-        
-        .person-2 .seat-head {
-            background-color: #a67c52;
-            width: 32px;
-            height: 32px;
-        }
-        
-        .person-3 .seat-head {
-            background-color: #e6c19c;
-            width: 26px;
-            height: 26px;
-        }
-        
-        .person-4 .seat-head {
-            background-color: #8b6b47;
-            width: 30px;
-            height: 30px;
-        }
-        
-        /* Controlli */
-        .controls {
-            margin-top: 30px;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            gap: 20px;
-        }
-        
-        .control-btn {
-            background-color: #333;
-            color: #fff;
-            border: none;
-            padding: 12px 25px;
-            border-radius: 50px;
-            cursor: pointer;
-            font-size: 1rem;
-            transition: all 0.3s ease;
-            display: flex;
-            align-items: center;
-            gap: 10px;
-        }
-        
-        .control-btn:hover {
-            background-color: #444;
-            transform: translateY(-3px);
-        }
-        
-        .control-btn i {
-            font-size: 1.2rem;
-        }
-        
-        .lights-on {
-            background-color: #ffcc00;
-            color: #000;
-        }
-        
-        .instructions {
-            text-align: center;
-            margin-top: 20px;
-            color: #aaa;
-            font-size: 1.1rem;
-        }
-        
-        /* Stato luci spente */
-        .lights-off .cinema-room {
-            background-color: #000;
-        }
-        
-        .lights-off .ambient-light {
-            opacity: 0.05;
-        }
-        
-        .lights-off .side-light {
-            opacity: 0.1;
-        }
-        
-        .lights-off .seat {
-            background-color: #222;
-        }
-        
-        .lights-off .seat.person {
-            background-color: #333;
-        }
-        
-        /* Video player */
-        .video-player {
-            width: 100%;
-            height: 100%;
-            display: none;
-            object-fit: cover;
-        }
-        
-        .video-player.active {
-            display: block;
-        }
-        
-        /* Effetti luce */
-        .light-effect {
-            position: absolute;
-            border-radius: 50%;
-            pointer-events: none;
-            z-index: 1;
-        }
-        
-        .projector-light {
-            position: absolute;
-            top: 100px;
-            left: 50%;
-            transform: translateX(-50%);
-            width: 300px;
-            height: 20px;
-            background: linear-gradient(to bottom, rgba(255, 255, 255, 0.8), transparent);
-            clip-path: polygon(20% 0%, 80% 0%, 100% 100%, 0% 100%);
-            opacity: 0;
-            transition: opacity 1s ease;
-            z-index: 2;
-        }
-        
-        .lights-off .projector-light {
-            opacity: 0.3;
-        }
-        
-        /* Responsive */
-        @media (max-width: 1200px) {
-            .screen-container {
-                max-width: 90%;
-            }
-            
-            .cinema-room {
-                height: 700px;
-            }
-        }
-        
-        @media (max-width: 768px) {
-            .cinema-room {
-                height: 600px;
-            }
-            
-            .seating-area {
-                height: 200px;
-            }
-            
-            .seat {
-                width: 30px;
-                height: 40px;
-            }
-            
-            .seat-head {
-                width: 24px;
-                height: 24px;
-                top: -15px;
-            }
-            
-            .screen-text {
-                font-size: 1.4rem;
-            }
-        }
-    </style>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <meta charset="UTF-8">
+  <title>Cinema VR Realistico</title>
+  <script src="https://aframe.io/releases/1.4.2/aframe.min.js"></script>
+  <style>
+    body {
+      margin: 0;
+      padding: 0;
+      overflow: hidden;
+      background: #000;
+    }
+    .instructions {
+      position: absolute;
+      top: 20px;
+      left: 20px;
+      color: white;
+      background: rgba(0,0,0,0.7);
+      padding: 10px;
+      border-radius: 5px;
+      z-index: 1000;
+      font-family: Arial, sans-serif;
+    }
+  </style>
 </head>
-<body>
-    <div class="container">
-        <h1 class="cinema-title">CINEMA VIRTUALE 1918x910</h1>
-        
-        <div class="cinema-room" id="cinemaRoom">
-            <!-- Effetti luce -->
-            <div class="ambient-light" id="ambientLight"></div>
-            <div class="side-lights">
-                <div class="side-light left"></div>
-                <div class="side-light right"></div>
-            </div>
-            
-            <!-- Luce proiettore -->
-            <div class="projector-light" id="projectorLight"></div>
-            
-            <!-- Schermo cinema -->
-            <div class="screen-container">
-                <div class="screen">
-                    <div class="screen-content" id="screenContent">
-                        <button class="screen-play-btn" id="playButton">
-                            <i class="fas fa-play"></i> PLAY FILM
-                        </button>
-                        <p class="screen-text">Premi PLAY per iniziare l'esperienza cinematografica</p>
-                    </div>
-                    <video class="video-player" id="videoPlayer" controls>
-                        <source src="https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4" type="video/mp4">
-                        Il tuo browser non supporta il tag video.
-                    </video>
-                </div>
-            </div>
-            
-            <!-- Posti a sedere con persone -->
-            <div class="seating-area" id="seatingArea">
-                <!-- Le sedie con persone verranno generate via JavaScript -->
-            </div>
-        </div>
-        
-        <div class="controls">
-            <button class="control-btn" id="lightsButton">
-                <i class="fas fa-lightbulb"></i> LUCI AMBIENTALI
-            </button>
-            <button class="control-btn" id="resetButton">
-                <i class="fas fa-redo"></i> RESET
-            </button>
-        </div>
-        
-        <p class="instructions">Premi PLAY sullo schermo per spegnere le luci e iniziare il film. Usa i controlli per gestire le luci.</p>
-    </div>
 
-    <script>
-        document.addEventListener('DOMContentLoaded', function() {
-            // Elementi DOM
-            const cinemaRoom = document.getElementById('cinemaRoom');
-            const playButton = document.getElementById('playButton');
-            const videoPlayer = document.getElementById('videoPlayer');
-            const screenContent = document.getElementById('screenContent');
-            const ambientLight = document.getElementById('ambientLight');
-            const projectorLight = document.getElementById('projectorLight');
-            const seatingArea = document.getElementById('seatingArea');
-            const lightsButton = document.getElementById('lightsButton');
-            const resetButton = document.getElementById('resetButton');
-            
-            // Stato delle luci
-            let lightsOn = true;
-            
-            // Genera posti a sedere con persone
-            function generateSeats() {
-                const rows = 5;
-                const seatsPerRow = 12;
-                
-                for (let row = 0; row < rows; row++) {
-                    const seatsRow = document.createElement('div');
-                    seatsRow.className = 'seats-row';
-                    
-                    for (let seatNum = 0; seatNum < seatsPerRow; seatNum++) {
-                        const seat = document.createElement('div');
-                        seat.className = 'seat';
-                        
-                        // Aggiungi una persona casualmente (70% di probabilità)
-                        if (Math.random() > 0.3) {
-                            seat.classList.add('person');
-                            // Assegna una classe persona casuale per diversità
-                            const personType = Math.floor(Math.random() * 4) + 1;
-                            seat.classList.add(`person-${personType}`);
-                            
-                            // Aggiungi testa alla persona
-                            const seatHead = document.createElement('div');
-                            seatHead.className = 'seat-head';
-                            seat.appendChild(seatHead);
-                        }
-                        
-                        seatsRow.appendChild(seat);
-                    }
-                    
-                    seatingArea.appendChild(seatsRow);
-                }
-            }
-            
-            // Genera effetti luce dinamici
-            function createLightEffects() {
-                // Rimuovi effetti luce esistenti
-                const existingLights = document.querySelectorAll('.light-effect');
-                existingLights.forEach(light => light.remove());
-                
-                // Crea nuovi effetti luce
-                const lightCount = 15;
-                for (let i = 0; i < lightCount; i++) {
-                    const light = document.createElement('div');
-                    light.className = 'light-effect';
-                    
-                    // Posizione casuale
-                    const xPos = Math.random() * 100;
-                    const yPos = Math.random() * 100;
-                    
-                    // Dimensioni casuali
-                    const size = Math.random() * 80 + 20;
-                    
-                    // Colori caldi casuali
-                    const colors = [
-                        'rgba(255, 204, 0, 0.1)',
-                        'rgba(255, 153, 0, 0.08)',
-                        'rgba(255, 102, 0, 0.06)',
-                        'rgba(255, 204, 102, 0.12)'
-                    ];
-                    const color = colors[Math.floor(Math.random() * colors.length)];
-                    
-                    // Applica stili
-                    light.style.width = `${size}px`;
-                    light.style.height = `${size}px`;
-                    light.style.background = `radial-gradient(circle, ${color} 0%, transparent 70%)`;
-                    light.style.left = `${xPos}%`;
-                    light.style.top = `${yPos}%`;
-                    light.style.opacity = '0.7';
-                    
-                    // Animazione leggera
-                    light.style.animation = `pulse ${Math.random() * 5 + 3}s infinite alternate`;
-                    
-                    cinemaRoom.appendChild(light);
-                }
-                
-                // Aggiungi keyframes per l'animazione
-                const styleSheet = document.createElement('style');
-                styleSheet.textContent = `
-                    @keyframes pulse {
-                        0% { opacity: 0.5; transform: scale(1); }
-                        100% { opacity: 0.9; transform: scale(1.1); }
-                    }
-                `;
-                document.head.appendChild(styleSheet);
-            }
-            
-            // Accendi/spegni luci
-            function toggleLights() {
-                lightsOn = !lightsOn;
-                
-                if (lightsOn) {
-                    cinemaRoom.classList.remove('lights-off');
-                    lightsButton.innerHTML = '<i class="fas fa-lightbulb"></i> LUCI AMBIENTALI';
-                    lightsButton.classList.add('lights-on');
-                    
-                    // Mostra il contenuto dello schermo se il video non è in riproduzione
-                    if (videoPlayer.paused) {
-                        screenContent.style.display = 'flex';
-                        videoPlayer.classList.remove('active');
-                    }
-                } else {
-                    cinemaRoom.classList.add('lights-off');
-                    lightsButton.innerHTML = '<i class="fas fa-moon"></i> LUCI SPENTE';
-                    lightsButton.classList.remove('lights-on');
-                }
-            }
-            
-            // Riproduci video
-            function playVideo() {
-                // Spegni le luci
-                if (lightsOn) {
-                    toggleLights();
-                }
-                
-                // Nascondi il contenuto dello schermo e mostra il video
-                screenContent.style.display = 'none';
-                videoPlayer.classList.add('active');
-                
-                // Riproduci il video
-                videoPlayer.play();
-                
-                // Aggiorna il testo del pulsante luci
-                lightsButton.innerHTML = '<i class="fas fa-moon"></i> LUCI SPENTE';
-                lightsButton.classList.remove('lights-on');
-            }
-            
-            // Reset cinema
-            function resetCinema() {
-                // Ferma il video
-                videoPlayer.pause();
-                videoPlayer.currentTime = 0;
-                videoPlayer.classList.remove('active');
-                
-                // Mostra il contenuto dello schermo
-                screenContent.style.display = 'flex';
-                
-                // Accendi le luci
-                if (!lightsOn) {
-                    toggleLights();
-                }
-            }
-            
-            // Gestione eventi
-            playButton.addEventListener('click', playVideo);
-            lightsButton.addEventListener('click', toggleLights);
-            resetButton.addEventListener('click', resetCinema);
-            
-            // Quando il video termina
-            videoPlayer.addEventListener('ended', function() {
-                // Torna allo stato iniziale dopo 3 secondi
-                setTimeout(resetCinema, 3000);
+<body>
+  <div class="instructions">
+    <strong>Istruzioni:</strong><br>
+    • Clicca PLAY per iniziare il film<br>
+    • Le luci si spegneranno automaticamente<br>
+    • Muovi il mouse per guardarti intorno<br>
+    • Usa la rotellina per zoom
+  </div>
+  
+  <a-scene>
+    <!-- VIDEO -->
+    <a-assets>
+      <video
+        id="movie"
+        src="Ti Aspettavo (1918X910).mp4"
+        crossorigin="anonymous"
+        playsinline
+      ></video>
+    </a-assets>
+
+    <!-- PAVIMENTO CON TAPPETO COLORATO -->
+    <a-plane rotation="-90 0 0" width="30" height="30" color="#1a0a0a">
+      <a-plane 
+        position="0 0.01 0" 
+        rotation="-90 0 0" 
+        width="28" 
+        height="28" 
+        color="#2a1a1a"
+        opacity="0.8"
+        repeat="4 4"
+        src="https://cdn.aframe.io/360-image-gallery-boilerplate/img/floor.jpg"
+      ></a-plane>
+    </a-plane>
+
+    <!-- PARETI COLORATE -->
+    <!-- Fondo con texture -->
+    <a-box position="0 3.5 -15" width="30" height="7" depth="0.2" color="#2a1a2a">
+      <a-box 
+        position="0 0 0.1" 
+        width="29.8" 
+        height="6.8" 
+        depth="0.01" 
+        color="#3a2a3a"
+        opacity="0.7"
+      ></a-box>
+    </a-box>
+
+    <!-- Testo sulla parete fondo -->
+    <a-text value="PierMovie" position="-11 4 -14.89" align="center" color="#ffcc00" width="6" rotation="0 0 0"></a-text>
+    <a-text value="Cinema VR Realistico" position="-11 3 -14.89" align="center" color="#ffffff" width="6" rotation="0 0 0"></a-text>
+    <a-text value="PierMovie" position="11 4 -14.89" align="center" color="#ffcc00" width="6" rotation="0 0 0"></a-text>
+    <a-text value="Cinema VR Realistico" position="11 3 -14.89" align="center" color="#ffffff" width="6" rotation="0 0 0"></a-text>
+
+    <!-- Laterali con colori vivaci -->
+    <a-box position="-15 3.5 0" width="0.2" height="7" depth="30" color="#2a2a4a">
+      <a-box 
+        position="0.1 0 0" 
+        width="0.01" 
+        height="6.8" 
+        depth="29.8" 
+        color="#3a3a5a"
+        opacity="0.7"
+      ></a-box>
+    </a-box>
+    
+    <a-box position="15 3.5 0" width="0.2" height="7" depth="30" color="#4a2a2a">
+      <a-box 
+        position="-0.1 0 0" 
+        width="0.01" 
+        height="6.8" 
+        depth="29.8" 
+        color="#5a3a3a"
+        opacity="0.7"
+      ></a-box>
+    </a-box>
+
+    <!-- Soffitto decorato -->
+    <a-box position="0 7 0" width="30" height="0.2" depth="30" color="#1a1a1a">
+      <a-box 
+        position="0 -0.1 0" 
+        width="29.8" 
+        height="0.01" 
+        depth="29.8" 
+        color="#2a2a2a"
+        opacity="0.8"
+      ></a-box>
+    </a-box>
+
+    <!-- SCHERMO CINEMA -->
+    <a-box position="0 3.5 -14.7" width="19.58" height="9.5" depth="0.1" color="#000000"></a-box>
+    <a-plane
+      id="screen"
+      position="0 3.5 -14.6"
+      width="19.18"
+      height="9.1"
+      material="shader: flat; src: #movie; npot: true"
+    ></a-plane>
+
+    <!-- DIFFUSORI AUDIO COLORATI -->
+    <!-- Diffusore anteriore sinistro -->
+    <a-box position="-14.5 4 -10" width="0.6" height="1.5" depth="1" color="#3a3a6a"></a-box>
+    <a-cylinder position="-14.3 4.3 -9.8" radius="0.4" height="0.08" rotation="90 0 0" color="#4a4a8a"></a-cylinder>
+    <a-cylinder position="-14.3 4.3 -9.8" radius="0.2" height="0.1" rotation="90 0 0" color="#2a2a4a"></a-cylinder>
+    <a-cylinder position="-14.3 3.7 -9.8" radius="0.25" height="0.08" rotation="90 0 0" color="#4a4a8a"></a-cylinder>
+    <a-cylinder position="-14.3 3.7 -9.8" radius="0.12" height="0.1" rotation="90 0 0" color="#2a2a4a"></a-cylinder>
+    <a-box position="-14.4 4 -9.9" width="0.5" height="1.3" depth="0.05" color="#5a5a9a"></a-box>
+    
+    <!-- Diffusore anteriore destro -->
+    <a-box position="14.5 4 -10" width="0.6" height="1.5" depth="1" color="#6a3a3a"></a-box>
+    <a-cylinder position="14.3 4.3 -9.8" radius="0.4" height="0.08" rotation="90 0 0" color="#8a4a4a"></a-cylinder>
+    <a-cylinder position="14.3 4.3 -9.8" radius="0.2" height="0.1" rotation="90 0 0" color="#4a2a2a"></a-cylinder>
+    <a-cylinder position="14.3 3.7 -9.8" radius="0.25" height="0.08" rotation="90 0 0" color="#8a4a4a"></a-cylinder>
+    <a-cylinder position="14.3 3.7 -9.8" radius="0.12" height="0.1" rotation="90 0 0" color="#4a2a2a"></a-cylinder>
+    <a-box position="14.4 4 -9.9" width="0.5" height="1.3" depth="0.05" color="#9a5a5a"></a-box>
+
+    <!-- AUDIO -->
+    <a-entity sound="src: #movie; autoplay: false; positional: false"></a-entity>
+
+    <!-- FILE DI POLTRONE COLORATE -->
+    <!-- FILA DAVANTI -->
+    <a-box position="-4 0.4 -0.5" width="1.2" height="0.5" depth="1.1" color="#00a86b"></a-box>
+    <a-box position="-4 0.85 -0.05" width="1.2" height="0.8" depth="0.2" color="#008b55"></a-box>
+
+    <a-box position="-2 0.4 -0.5" width="1.2" height="0.5" depth="1.1" color="#ff6b6b"></a-box>
+    <a-box position="-2 0.85 -0.05" width="1.2" height="0.8" depth="0.2" color="#ff5252"></a-box>
+
+    <a-box position="0 0.4 -0.5" width="1.2" height="0.5" depth="1.1" color="#4ecdc4"></a-box>
+    <a-box position="0 0.85 -0.05" width="1.2" height="0.8" depth="0.2" color="#45b7aa"></a-box>
+
+    <a-box position="2 0.4 -0.5" width="1.2" height="0.5" depth="1.1" color="#ffd166"></a-box>
+    <a-box position="2 0.85 -0.05" width="1.2" height="0.8" depth="0.2" color="#ffc145"></a-box>
+
+    <a-box position="4 0.4 -0.5" width="1.2" height="0.5" depth="1.1" color="#a06cd5"></a-box>
+    <a-box position="4 0.85 -0.05" width="1.2" height="0.8" depth="0.2" color="#8a5dc1"></a-box>
+
+    <!-- FILA 1 (posizione utente) -->
+    <a-box position="-4 0.4 2" width="1.2" height="0.5" depth="1.1" color="#118ab2"></a-box>
+    <a-box position="-4 0.85 2.55" width="1.2" height="0.8" depth="0.2" color="#0a6d8e"></a-box>
+    
+    <a-box position="-2 0.4 2" width="1.2" height="0.5" depth="1.1" color="#ef476f"></a-box>
+    <a-box position="-2 0.85 2.55" width="1.2" height="0.8" depth="0.2" color="#d43d63"></a-box>
+    
+    <!-- Poltrona centrale (utente) -->
+    <a-box position="0 0.4 2" width="1.2" height="0.5" depth="1.1" color="#ffd166"></a-box>
+    <a-box position="0 0.85 2.55" width="1.2" height="0.8" depth="0.2" color="#ffc145"></a-box>
+    
+    <a-box position="2 0.4 2" width="1.2" height="0.5" depth="1.1" color="#06d6a0"></a-box>
+    <a-box position="2 0.85 2.55" width="1.2" height="0.8" depth="0.2" color="#05c18e"></a-box>
+    
+    <a-box position="4 0.4 2" width="1.2" height="0.5" depth="1.1" color="#7209b7"></a-box>
+    <a-box position="4 0.85 2.55" width="1.2" height="0.8" depth="0.2" color="#5e0996"></a-box>
+
+    <!-- FILA 2 -->
+    <a-box position="-5 0.4 4.5" width="1.2" height="0.5" depth="1.1" color="#ff9e00"></a-box>
+    <a-box position="-5 0.85 5.05" width="1.2" height="0.8" depth="0.2" color="#e68a00"></a-box>
+    
+    <a-box position="-3 0.4 4.5" width="1.2" height="0.5" depth="1.1" color="#0077b6"></a-box>
+    <a-box position="-3 0.85 5.05" width="1.2" height="0.8" depth="0.2" color="#006198"></a-box>
+    
+    <a-box position="-1 0.4 4.5" width="1.2" height="0.5" depth="1.1" color="#ff0054"></a-box>
+    <a-box position="-1 0.85 5.05" width="1.2" height="0.8" depth="0.2" color="#e6004a"></a-box>
+    
+    <a-box position="1 0.4 4.5" width="1.2" height="0.5" depth="1.1" color="#9b5de5"></a-box>
+    <a-box position="1 0.85 5.05" width="1.2" height="0.8" depth="0.2" color="#8a4ed4"></a-box>
+    
+    <a-box position="3 0.4 4.5" width="1.2" height="0.5" depth="1.1" color="#00bbf9"></a-box>
+    <a-box position="3 0.85 5.05" width="1.2" height="0.8" depth="0.2" color="#00a5d8"></a-box>
+    
+    <a-box position="5 0.4 4.5" width="1.2" height="0.5" depth="1.1" color="#f15bb5"></a-box>
+    <a-box position="5 0.85 5.05" width="1.2" height="0.8" depth="0.2" color="#d952a2"></a-box>
+
+    <!-- PERSONE REALISTICHE NEL CINEMA -->
+    <!-- Persona su poltrona -4 fila davanti -->
+    <a-entity position="-4 0.8 -0.5">
+      <!-- Corpo -->
+      <a-box position="0 0.4 0" width="0.6" height="0.8" depth="0.4" color="#8B4513"></a-box>
+      <!-- Testa -->
+      <a-sphere position="0 1.2 0" radius="0.25" color="#F5DEB3"></a-sphere>
+      <!-- Capelli -->
+      <a-box position="0 1.35 0.15" width="0.5" height="0.1" depth="0.3" color="#8B4513"></a-box>
+      <!-- Braccia -->
+      <a-box position="-0.35 0.4 0" width="0.15" height="0.6" depth="0.15" color="#8B4513"></a-box>
+      <a-box position="0.35 0.4 0" width="0.15" height="0.6" depth="0.15" color="#8B4513"></a-box>
+    </a-entity>
+
+    <!-- Persona su poltrona -2 fila davanti -->
+    <a-entity position="-2 0.8 -0.5">
+      <a-box position="0 0.4 0" width="0.6" height="0.8" depth="0.4" color="#2F4F4F"></a-box>
+      <a-sphere position="0 1.2 0" radius="0.25" color="#FFE4B5"></a-sphere>
+      <a-box position="0 1.35 0.15" width="0.5" height="0.1" depth="0.3" color="#000000"></a-box>
+      <a-box position="-0.35 0.4 0" width="0.15" height="0.6" depth="0.15" color="#2F4F4F"></a-box>
+      <a-box position="0.35 0.4 0" width="0.15" height="0.6" depth="0.15" color="#2F4F4F"></a-box>
+    </a-entity>
+
+    <!-- Persona su poltrona 0 fila davanti -->
+    <a-entity position="0 0.8 -0.5">
+      <a-box position="0 0.4 0" width="0.6" height="0.8" depth="0.4" color="#800000"></a-box>
+      <a-sphere position="0 1.2 0" radius="0.25" color="#FFDAB9"></a-sphere>
+      <a-box position="0 1.35 0.15" width="0.5" height="0.1" depth="0.3" color="#A52A2A"></a-box>
+      <a-box position="-0.35 0.4 0" width="0.15" height="0.6" depth="0.15" color="#800000"></a-box>
+      <a-box position="0.35 0.4 0" width="0.15" height="0.6" depth="0.15" color="#800000"></a-box>
+    </a-entity>
+
+    <!-- Persona su poltrona 2 fila davanti -->
+    <a-entity position="2 0.8 -0.5">
+      <a-box position="0 0.4 0" width="0.6" height="0.8" depth="0.4" color="#006400"></a-box>
+      <a-sphere position="0 1.2 0" radius="0.25" color="#F0E68C"></a-sphere>
+      <a-box position="0 1.35 0.15" width="0.5" height="0.1" depth="0.3" color="#228B22"></a-box>
+      <a-box position="-0.35 0.4 0" width="0.15" height="0.6" depth="0.15" color="#006400"></a-box>
+      <a-box position="0.35 0.4 0" width="0.15" height="0.6" depth="0.15" color="#006400"></a-box>
+    </a-entity>
+
+    <!-- Persona su poltrona 4 fila davanti -->
+    <a-entity position="4 0.8 -0.5">
+      <a-box position="0 0.4 0" width="0.6" height="0.8" depth="0.4" color="#4B0082"></a-box>
+      <a-sphere position="0 1.2 0" radius="0.25" color="#FFFACD"></a-sphere>
+      <a-box position="0 1.35 0.15" width="0.5" height="0.1" depth="0.3" color="#8A2BE2"></a-box>
+      <a-box position="-0.35 0.4 0" width="0.15" height="0.6" depth="0.15" color="#4B0082"></a-box>
+      <a-box position="0.35 0.4 0" width="0.15" height="0.6" depth="0.15" color="#4B0082"></a-box>
+    </a-entity>
+
+    <!-- Persone nelle file posteriori -->
+    <a-entity position="-5 0.8 4.5">
+      <a-box position="0 0.4 0" width="0.6" height="0.8" depth="0.4" color="#B22222"></a-box>
+      <a-sphere position="0 1.2 0" radius="0.25" color="#FFE4E1"></a-sphere>
+    </a-entity>
+
+    <a-entity position="-3 0.8 4.5">
+      <a-box position="0 0.4 0" width="0.6" height="0.8" depth="0.4" color="#FF4500"></a-box>
+      <a-sphere position="0 1.2 0" radius="0.25" color="#FAEBD7"></a-sphere>
+    </a-entity>
+
+    <a-entity position="1 0.8 4.5">
+      <a-box position="0 0.4 0" width="0.6" height="0.8" depth="0.4" color="#008080"></a-box>
+      <a-sphere position="0 1.2 0" radius="0.25" color="#FFE4C4"></a-sphere>
+    </a-entity>
+
+    <a-entity position="5 0.8 4.5">
+      <a-box position="0 0.4 0" width="0.6" height="0.8" depth="0.4" color="#191970"></a-box>
+      <a-sphere position="0 1.2 0" radius="0.25" color="#FFDEAD"></a-sphere>
+    </a-entity>
+
+    <!-- LUCI AMBIENTALI (si spengono quando si preme play) -->
+    <a-light id="ambientLight" type="ambient" intensity="0.6" color="#FFD700"></a-light>
+    <a-light id="mainLight1" type="point" position="0 6.5 -14" intensity="1.0" color="#FFFFFF"></a-light>
+    <a-light id="mainLight2" type="point" position="-10 6.5 0" intensity="0.8" color="#FFCC00"></a-light>
+    <a-light id="mainLight3" type="point" position="10 6.5 0" intensity="0.8" color="#FFCC00"></a-light>
+    <a-light id="sideLight1" type="point" position="-15 6.5 0" intensity="0.6" color="#FF9900"></a-light>
+    <a-light id="sideLight2" type="point" position="15 6.5 0" intensity="0.6" color="#FF9900"></a-light>
+    <a-light id="frontLight1" type="point" position="-10 6.5 -10" intensity="0.7" color="#FFDD55"></a-light>
+    <a-light id="frontLight2" type="point" position="10 6.5 -10" intensity="0.7" color="#FFDD55"></a-light>
+    
+    <!-- Luce del proiettore (inizialmente spenta) -->
+    <a-light id="projectorLight" type="spot" position="0 6.5 -13" target="#screen" angle="30" penumbra="0.5" intensity="0" color="#FFFFFF"></a-light>
+
+    <!-- CAMERA -->
+    <a-entity position="0 1.2 2">
+      <a-camera look-controls="magicWindowTrackingEnabled: true">
+        <a-cursor></a-cursor>
+      </a-camera>
+    </a-entity>
+
+    <!-- PLAY BUTTON -->
+    <a-plane
+      id="playBtn"
+      position="0 1.6 0.8"
+      width="2.5"
+      height="1.0"
+      color="#FF0000"
+      material="shader: flat; side: double"
+      text="value: ▶ PLAY FILM; align: center; color: white; width: 6"
+      animation__hover="property: scale; from: 1 1 1; to: 1.1 1.1 1; dur: 200; startEvents: mouseenter"
+      animation__hoverout="property: scale; from: 1.1 1.1 1; to: 1 1 1; dur: 200; startEvents: mouseleave"
+    >
+    </a-plane>
+
+    <!-- SCRITTA "Premi PLAY" -->
+    <a-text 
+      value="Premi PLAY per iniziare lo spettacolo" 
+      position="0 0.8 0.8" 
+      align="center" 
+      color="#FFCC00" 
+      width="8"
+      opacity="0.8"
+    ></a-text>
+
+  </a-scene>
+
+  <script>
+    document.addEventListener('DOMContentLoaded', function() {
+      const playBtn = document.querySelector('#playBtn');
+      const video = document.querySelector('#movie');
+      const screen = document.querySelector('#screen');
+      const projectorLight = document.querySelector('#projectorLight');
+      
+      // Lista di tutte le luci da spegnere
+      const lights = [
+        '#ambientLight',
+        '#mainLight1', '#mainLight2', '#mainLight3',
+        '#sideLight1', '#sideLight2',
+        '#frontLight1', '#frontLight2'
+      ];
+      
+      // Stato delle luci
+      let lightsOn = true;
+      
+      // Funzione per spegnere le luci
+      function turnOffLights() {
+        lights.forEach(lightId => {
+          const light = document.querySelector(lightId);
+          if (light) {
+            // Animazione per spegnimento graduale
+            light.setAttribute('animation', {
+              property: 'intensity',
+              from: light.getAttribute('intensity'),
+              to: 0.1,
+              dur: 2000,
+              easing: 'easeOutQuad'
+            });
+            light.setAttribute('intensity', 0.1);
+          }
+        });
+        
+        // Accendi la luce del proiettore
+        projectorLight.setAttribute('animation', {
+          property: 'intensity',
+          from: 0,
+          to: 0.8,
+          dur: 2000,
+          easing: 'easeInQuad'
+        });
+        projectorLight.setAttribute('intensity', 0.8);
+        
+        lightsOn = false;
+      }
+      
+      // Funzione per riaccendere le luci
+      function turnOnLights() {
+        lights.forEach(lightId => {
+          const light = document.querySelector(lightId);
+          if (light) {
+            // Riaccendi le luci gradualmente
+            light.setAttribute('animation', {
+              property: 'intensity',
+              from: 0.1,
+              to: lightId === '#ambientLight' ? 0.6 : 
+                  lightId.includes('main') ? 1.0 : 
+                  lightId.includes('side') ? 0.6 : 
+                  lightId.includes('front') ? 0.7 : 0.8,
+              dur: 2000,
+              easing: 'easeInQuad'
             });
             
-            // Inizializzazione
-            generateSeats();
-            createLightEffects();
-            
-            // Pulsante luci inizialmente evidenziato
-            lightsButton.classList.add('lights-on');
-            
-            // Effetto di luce dinamica sulle persone
-            setInterval(() => {
-                const persons = document.querySelectorAll('.seat.person');
-                persons.forEach(person => {
-                    // Leggera variazione di colore casuale
-                    if (Math.random() > 0.7 && lightsOn) {
-                        person.style.backgroundColor = `hsl(40, ${Math.random() * 20 + 20}%, ${Math.random() * 10 + 25}%)`;
-                        
-                        // Torna al colore originale dopo un po'
-                        setTimeout(() => {
-                            person.style.backgroundColor = '';
-                        }, 500);
-                    }
-                });
-            }, 1000);
+            if (lightId === '#ambientLight') {
+              light.setAttribute('intensity', 0.6);
+            } else if (lightId.includes('main')) {
+              light.setAttribute('intensity', 1.0);
+            } else if (lightId.includes('side')) {
+              light.setAttribute('intensity', 0.6);
+            } else if (lightId.includes('front')) {
+              light.setAttribute('intensity', 0.7);
+            }
+          }
         });
-    </script>
+        
+        // Spegni la luce del proiettore
+        projectorLight.setAttribute('animation', {
+          property: 'intensity',
+          from: 0.8,
+          to: 0,
+          dur: 1000,
+          easing: 'easeOutQuad'
+        });
+        projectorLight.setAttribute('intensity', 0);
+        
+        lightsOn = true;
+      }
+      
+      // Event listener per il click sul pulsante PLAY
+      playBtn.addEventListener('click', function() {
+        // Nascondi il pulsante
+        playBtn.setAttribute('visible', 'false');
+        
+        // Spegni le luci gradualmente
+        turnOffLights();
+        
+        // Avvia il video dopo un breve ritardo per sincronizzarsi con lo spegnimento luci
+        setTimeout(() => {
+          video.play();
+        }, 1000);
+        
+        // Nascondi anche la scritta
+        const instructionText = document.querySelector('[value="Premi PLAY per iniziare lo spettacolo"]');
+        if (instructionText) {
+          instructionText.parentNode.removeChild(instructionText);
+        }
+      });
+      
+      // Quando il video finisce, riaccendi le luci
+      video.addEventListener('ended', function() {
+        turnOnLights();
+        // Mostra nuovamente il pulsante play
+        playBtn.setAttribute('visible', 'true');
+      });
+      
+      // Anche se l'utente mette in pausa, riaccendi le luci
+      video.addEventListener('pause', function() {
+        if (!lightsOn) {
+          turnOnLights();
+          playBtn.setAttribute('visible', 'true');
+        }
+      });
+    });
+  </script>
 </body>
 </html>
 
